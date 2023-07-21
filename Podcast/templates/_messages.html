@@ -1,0 +1,21 @@
+<div id="messages"
+     class="fixed inset-x-0 z-50 mx-auto max-w-fit top-16"
+     {% if hx_oob %}hx-swap-oob="true"{% endif %}>
+    {% if messages %}
+        <ul class="space-y-3">
+            {% for message in messages %}
+                <li class="flex flex-wrap items-center justify-center p-2 font-bold text-center text-white bg-gray-900 rounded shadow-xl dark:bg-gray-600"
+                    role="alert"
+                    x-data="{show: true}"
+                    x-show="show"
+                    x-init="setTimeout(() => show = false, 1500)"
+                    x-transition:enter="transition ease-in duration-200"
+                    x-transition:enter-start="transform opacity-0"
+                    x-transition:enter-end="transform opacity-100"
+                    x-transition:leave="transition ease-out duration-500"
+                    x-transition:leave-start="transform opacity-100"
+                    x-transition:leave-end="transform opacity-0">{{ message.message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
