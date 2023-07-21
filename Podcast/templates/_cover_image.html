@@ -1,0 +1,28 @@
+{% spaceless %}
+    <img class="object-cover border bg-transparent{% if url %} hover:grayscale cursor-pointer{% endif %} {{ css_class }}"
+        title="{{ title }}"
+        alt="{{ title }}"
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        width="{{ size }}"
+        height="{{ size }}"
+        src="{{ cover_url|default:placeholder }}"
+        {% if url %}
+            role="link"
+            hx-get="{{ url }}"
+            hx-push-url="true"
+            hx-trigger="click consume"
+        {% endif %}
+        {% if cover_url %}
+            {# djlint:off #}
+            x-data="{
+            isLoaded: false,
+            src: '{{ cover_url|escapejs }}',
+            placeholder: '{{ placeholder|escapejs }}'}"
+            {# djlint:on #}
+            @load.once="isLoaded=true;"
+            @error.once="src=placeholder;isLoaded=true;"
+            :src="isLoaded ? src : placeholder"
+        {% endif %}>
+    {% endspaceless %}
