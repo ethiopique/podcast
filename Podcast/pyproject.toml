@@ -1,0 +1,203 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "radiofeed"
+description = "Podcast aggregator app"
+readme = "README.md"
+version = "0.0.0"
+license = "MIT"
+authors = ["Dan Jacob <danjac2018@gmail.com>"]
+maintainers = ["Dan Jacob <danjac2018@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+attrs = "^23.1.0"
+brotli = "^1.0.9"
+django-allauth = "^0.54.0"
+django-extensions = "^3.2.3"
+django-htmx = "^1.13.0"
+django-model-utils = "^4.3.1"
+django-permissions-policy = "^4.14.0"
+django-redis = "^5.2.0"
+gunicorn = "^20.1.0"
+hiredis = "^2.2.2"
+lxml = "^4.9.2"
+nltk = "^3.8.1"
+pillow = "^10.0.0"
+python-dateutil = "^2.8.2"
+redis = "^4.5.1"
+scikit-learn = "^1.2.1"
+sentry-sdk = "^1.15.0"
+whitenoise = "^6.3.0"
+requests = "^2.28.2"
+scipy = "^1.10.1"
+heroicons = {extras = ["django"], version = "^2.2.0"}
+nh3 = "^0.2.9"
+markdown-it-py = {extras = ["linkify"], version = "^3.0.0"}
+django = "^4.2"
+psycopg = {extras = ["binary"], version = "^3.1.8"}
+django-fast-update = "^0.2.2"
+django-anymail = "^10.0"
+django-render-block = "^0.9.2"
+python-decouple = "^3.8"
+dj-database-url = "^2.0.0"
+django-cacheops = "^7.0.1"
+
+[tool.poetry.group.dev.dependencies]
+bandit = {extras = ["toml"], version = "^1.7.4"}
+coverage = {extras = ["toml"], version = "^7.2.0"}
+django-coverage-plugin = "^3.0.0"
+faker = "^18.2.0"
+mypy = "^1.0.1"
+pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
+pytest-django = "^4.5.2"
+pytest-icdiff = "^0.6"
+pytest-mock = "^3.10.0"
+pytest-mypy = "^0.10.3"
+pytest-randomly = "^3.12.0"
+pytest-sugar = "^0.9.6"
+pytest-xdist = "^3.2.0"
+types-python-dateutil = "^2.8.19.11"
+types-requests = "^2.28.11.14"
+types-urllib3 = "^1.26.25.7"
+django-browser-reload = "^1.6.0"
+ipython = "^8.10.0"
+django-debug-toolbar = "^4.0.0"
+pytest-env = "^0.8.1"
+ruff = "^0.0.278"
+djlint = "^1.31.1"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE="radiofeed.settings"
+addopts = [
+    "-v",
+    "-x",
+    "-p no:warnings",
+    "--ff",
+    "--mypy",
+    "--cov",
+    "--reuse-db",
+    "--no-cov-on-fail",
+    "--cov-fail-under=100",
+    "--cov-report=term-missing",
+    "--tb=short",
+]
+testpaths = "radiofeed"
+env = [
+    "TEMPLATE_DEBUG=true",
+    "USE_COLLECTSTATIC=false",
+    "USE_HTTPS=false",
+]
+
+[tool.coverage.run]
+source=["radiofeed", "templates"]
+omit=[
+    "**/migrations/*",
+    "*/nltk/*",
+    "*/static/*",
+    "*/tests/*",
+    "*/settings.py",
+    "*/wsgi.py",
+]
+
+plugins = [
+    "django_coverage_plugin"
+]
+
+[tool.django_coverage_plugin]
+template_extensions = ["html"]
+
+
+[tool.mypy]
+python_version = "3.11"
+check_untyped_defs = false
+ignore_missing_imports = true
+show_error_codes = true
+strict_optional = true
+strict_equality = true
+no_implicit_optional = true
+warn_unused_ignores = false
+warn_redundant_casts = false
+warn_unused_configs = false
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module="*.tests.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module="*.migrations.*"
+ignore_errors = true
+
+[tool.djlint]
+ignore = "H030,H031,H017,H021"
+
+[tool.ruff]
+target-version = "py311"
+
+select = [
+    "B", # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "C90", # mccabe
+    "D10", # flake8-debugger
+    "DJ", # flake8-django
+    "E", # pycodestyle (error)
+    "EM", # flake8-errmsg
+    "ERA", # eradicate
+    "F", # pyflakes
+    "FA", # flake8-future-annotations
+    "I001", # isort
+    "INP", # flake8-no-pep420
+    "ISC", # flake8-implicit-str-concat
+    "N", # pep8-naming
+    "PIE", # flake8-pie
+    "PT", # flake8-pytest-style
+    "PTH", # flake8-use-pathlib
+    "RET", # flake8-return
+    "RSE", # flake8-raise
+    "S", # flake8-bandit
+    "SIM", # flake8-simplify
+    "T20", # flake8-print
+    "TCH", # flake8-type-checking
+    "TID", # flake8-tidy-imports
+    "W", # pycodestyle (warning)
+]
+ignore = [
+    "D100",
+    "D104",
+    "D106",
+    "D107",
+    "D203",
+    "D204",
+    "D213",
+    "D215",
+    "D400",
+    "D401",
+    "D404",
+    "D406",
+    "D407",
+    "D408",
+    "D409",
+    "D413",
+    "E501",
+    "E701",
+    "Q000",
+    "S101",
+]
+[tool.ruff.per-file-ignores]
+# ignore pydocstyle rules for tests and migrations
+"**/conftest.py" = ["D101", "D102", "D103", "D105"]
+"**/apps.py" = ["D101", "D102", "D103", "D105"]
+"**/migrations/**.py" = ["D101", "D102", "D103", "D105", "E501", "N"]
+"**/tests/**.py" = ["D101", "D102", "D103", "D105"]
+
+[tool.ruff.isort]
+known-first-party = ["radiofeed"]
+
+[tool.pyright]
+reportOptionalMemberAccess = false
+reportGeneralTypeIssues = false
+reportMissingTypeStubs = false
