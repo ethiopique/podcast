@@ -1,0 +1,34 @@
+{
+    "name": "Radiofeed Dokku deployment",
+    "addons": [
+        "dokku-letsencrypt",
+        "dokku-redis",
+        "dokku-postgres"
+    ],
+    "formation": {
+        "web": {
+            "quantity": 1
+        },
+        "feedparser": {
+            "quantity": 1
+        }
+    },
+    "cron": [
+        {
+            "command": "python manage.py create_recommendations",
+            "schedule": "15 6 * * *"
+        },
+        {
+            "command": "python manage.py send_recommendations_emails",
+            "schedule": "15 9 * * 1"
+        },
+        {
+            "command": "python manage.py crawl_itunes",
+            "schedule": "15 3 * * *"
+        },
+        {
+            "command": "python manage.py clearsessions",
+            "schedule": "5 6 * * *"
+        }
+    ]
+}
