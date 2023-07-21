@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}
+    | History
+{% endblock title %}
+{% block content %}
+    <header class="pb-3 mb-3 border-b space-y-3">
+        <h1 class="flex justify-center text-lg font-bold sm:justify-start lg:text-xl xl:text-2xl">History</h1>
+        {% if request.search or page_obj.has_other_pages %}
+            <nav>
+                <ul class="items-center justify-between sm:flex space-y-2 sm:space-y-0">
+                    <li class="flex items-center justify-center mb-3 sm:justify-start sm:mb-0">
+                        {% if request.search %}
+                            <a href="{% url 'episodes:search_episodes' %}?{{ request.search.qs }}"
+                               class="link">Search All Podcasts</a>
+                        {% else %}
+                            <a href="{{ request.path }}?{{ request.ordering.qs_reversed }}"
+                               class="link">{{ request.ordering.is_asc|yesno:"Newest First,Oldest First" }}</a>
+                        {% endif %}
+                    </li>
+                    <li class="flex items-center justify-center sm:justify-end">
+                        {% include "_search_form.html" with placeholder="Search: History" %}
+                    </li>
+                </ul>
+            </nav>
+        {% endif %}
+    </header>
+    {% block pagination %}
+        {% render "_pagination_links.html" as pagination_links %}
+        <div class="divide-y divide-solid" id="{{ pagination_target }}">
+            {{ pagination_links }}
+            {% for audio_log in page_obj %}
+                {% include "episodes/_episode.html" with episode=audio_log.episode %}
+            {% empty %}
+                {% include "_empty.html" %}
+            {% endfor %}
+            {{ pagination_links }}
+        </div>
+    {% endblock pagination %}
+{% endblock content %}
